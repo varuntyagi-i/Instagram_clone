@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insta_clone</title>
+    <style>
+        body{
+            text-align:center;
+            padding: 0px 0px 0px 0px;
+            margin: 0px;
+        }
+        h1{
+            font-size: 50px;
+        }
+        h3{
+            margin: 0px;
+            padding: 0px 0px 5px 0px;
+        }
+        h4{
+            margin: 0px;
+        }
+        span{
+            margin: 0px;
+            padding: 5px 0px 0px 0px;
+
+        }
+
+        .change_s{
+            color:blue;
+            font-size:40px;
+        }
+        .change_p{
+            margin: 0px;
+            font-family:helvetica;
+        }
+        .change_d{
+            color: white;
+            background-color:rgba(0,0,0,.5);
+            margin: 10px 450px 5px 450px;
+        }
+
+        .change_i{
+               margin:5px 150px 0px 0px;
+        }
+        .change_i1{
+               margin:-21px 0px 0px 150px;
+        }
+        .change_i2{
+            text-align:right;
+            margin:30px 50px -60px 0px;
+        }
+
+    </style>
+</head>
+<body>
+    <form class="change_i2" method="get" action="/logout/">{% csrf_token %}
+        <input style type="submit" class="btn-default btn" value="Logout">
+    </form>
+
+    <h1>upload to win</h1>
+            <form class="change_i" method="post" action="/post/">{% csrf_token %}
+                <input style type="submit" class="btn-default btn" value="Create Post">
+            </form>
+            <form class="change_i1" method="post" action="/leadersboard/">{% csrf_token %}
+                <input style type="submit" class="btn-default btn" value="Leader's board">
+            </form>
+
+
+    {% for post in posts %}
+        <br><br>
+        <div class="change_d">
+            <h3> Posted by: {{ post.user.username }} </h3>
+            <p style="margin:0px">[{{ post.created_on }}]</p>
+        </div>
+
+        <img src="{{ post.image_url }}" width="400px" height="400px">
+        <br>
+        <span class="change_s">{{ post.caption }}</span>
+        <h4> Points awarded: {{ post.points}} </h4>
+        <br><br>
+
+        <form action="/like/" method="post">{% csrf_token %}
+            <div style="display:inline-block">
+                {{ post.like_count }} like this &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <input name="post" type="hidden" value="{{ post.id }}">
+            {% if post.has_liked %}
+            <input type="submit" class="btn btn-default" value="Unlike">
+            {% else %}
+            <input type="submit" class="btn btn-default" value="Like">
+            {% endif %}
+        </form>
+        <br>
+        <form method="POST" action="/comment/">{% csrf_token %}
+            <input type="hidden" name="post" value="{{ post.id }}" >
+            <input type="text" name="comment_text" id="comment_text" placeholder="Make a comment.." value="{{ comment_text }}">
+            {{ comment_text }}
+            <input type="submit" class="btn-default btn" value="Comment">
+        </form>
+
+            <div>
+                {% for comment in post.comments %}
+                <br>
+                <p class="change_p" style="font-size:17px">{{ comment.user.username }}:
+                    <span style="color:green;font-size:20px">{{ comment.comment_text }}</span></p>
+                <p class="change_p" style="font-size:13px">{{ comment.created_on }}</p>
+                {% endfor %}
+            </div>
+
+
+        <br><br>
+    {% endfor %}
+
+
+
+</body>
+</html>
