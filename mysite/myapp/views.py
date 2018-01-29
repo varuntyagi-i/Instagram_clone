@@ -12,8 +12,8 @@ from models import UserModel,SessionToken,PostModel,LikeModel,CommentModel,Point
 from datetime import timedelta
 from django.utils import timezone
 from imgurpython import ImgurClient
-from mysite.settings import BASE_DIR
-from details import client_id,client_secret,sendgrid_api,clarifai_api
+# from mysite.settings import BASE_DIR
+from details import client_id,client_secret,sendgrid_api,clarifai_api,BASE_DIR
 
 # Create your views here.
 def signup_view(request):
@@ -207,13 +207,14 @@ def comment_view(request):
 def leaders_view(request):
     user = check_validation(request)
     if user and request.method == 'POST':
-        test = 0.0
+        ans = 0.0
         points = PointsModel.objects.all()
         if points:
             for point in points:
-                if (test < point.point):
-                    value = point
-            return render(request, 'leadersboard.html', {'points': points, 'value': value})
+                if (ans < point.point):
+                    ans = point.point
+                    test = point
+            return render(request, 'leadersboard.html', {'points': points, 'value': test, 'answer':ans})
         else:
             return redirect('/feed/')
     else:
@@ -238,3 +239,7 @@ def check_validation(request):
                 return session.user
     else:
         return None
+
+# points = PointsModel.objects.all()
+# for point in points:
+#     print point
