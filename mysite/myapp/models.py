@@ -7,7 +7,7 @@ import uuid
 
 # Create your models here.
 class UserModel(models.Model):
-    email = models.EmailField();
+    email = models.EmailField()
     name = models.CharField(max_length=255)
     username = models.CharField(max_length=120)
     """
@@ -27,7 +27,7 @@ class UserModel(models.Model):
 
 
 class PostModel(models.Model):
-    user = models.ForeignKey(UserModel)
+    user = models.ForeignKey(UserModel, on_delete=models.PROTECT)
 
     image = models.FileField(upload_to='user_images')
     image_url = models.CharField(max_length=255)
@@ -46,7 +46,7 @@ class PostModel(models.Model):
 
 
 class SessionToken(models.Model):
-    user = models.ForeignKey(UserModel)
+    user = models.ForeignKey(UserModel, on_delete=models.PROTECT)
     session_token = models.CharField(max_length=255)
     last_request_on = models.DateTimeField(auto_now=True)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -56,21 +56,21 @@ class SessionToken(models.Model):
 
 
 class LikeModel(models.Model):
-    user = models.ForeignKey(UserModel)
-    post = models.ForeignKey(PostModel)
+    user = models.ForeignKey(UserModel, on_delete=models.PROTECT)
+    post = models.ForeignKey(PostModel, on_delete=models.PROTECT)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
 
 class CommentModel(models.Model):
-    user = models.ForeignKey(UserModel)
-    post = models.ForeignKey(PostModel)
+    user = models.ForeignKey(UserModel, on_delete=models.PROTECT)
+    post = models.ForeignKey(PostModel, on_delete=models.PROTECT)
     comment_text = models.CharField(max_length=555)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
 class PointsModel(models.Model):
-    post = models.ForeignKey(PostModel)
+    post = models.ForeignKey(PostModel, on_delete=models.PROTECT)
     point = models.FloatField(max_length=10)
 
 

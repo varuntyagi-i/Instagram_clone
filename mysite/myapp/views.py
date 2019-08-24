@@ -6,9 +6,9 @@ from clarifai.rest import ClarifaiApp
 from sendgrid.helpers.mail import *
 import sendgrid
 from django.shortcuts import render,redirect
-from forms import SignUpForm,LoginForm,PostForm,LikeForm,CommentForm,LeaderForm
+from myapp.forms import SignUpForm,LoginForm,PostForm,LikeForm,CommentForm,LeaderForm
 from django.contrib.auth.hashers import make_password,check_password
-from models import UserModel,SessionToken,PostModel,LikeModel,CommentModel,PointsModel
+from myapp.models import UserModel,SessionToken,PostModel,LikeModel,CommentModel,PointsModel
 from datetime import timedelta
 from django.utils import timezone
 from imgurpython import ImgurClient
